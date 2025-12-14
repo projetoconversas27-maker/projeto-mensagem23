@@ -1,0 +1,8 @@
+{
+  "name": "TUPÃ chat",
+  "description": "Uma rede social baseada em eventos e chat local.",
+  "requestFramePermissions": [
+    "microphone",
+    "geolocation"
+  ]
+}
