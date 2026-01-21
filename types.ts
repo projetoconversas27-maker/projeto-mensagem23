@@ -3,90 +3,72 @@ export enum MessageRole {
   OTHER = 'other',
 }
 
-export type MediaType = 'image' | 'video' | 'audio';
-
-export interface UserProfile {
-  id: string;
-  name: string;
-  email: string;
-  avatar: string;
-}
-
 export interface Attachment {
   mimeType: string;
-  data: string; // Base64 string
-  type: MediaType;
+  data: string;
+  type: 'image' | 'video' | 'audio';
   previewUrl?: string;
+}
+
+export interface Mention {
+  id: string;
+  type: 'event' | 'product';
+  label: string;
+  image?: string;
+}
+
+export interface ReplyData {
+  text: string;
+  senderName: string;
+  messageId: string;
 }
 
 export interface Message {
   id: string;
   role: MessageRole;
-  senderName?: string;
-  senderId?: string; // ID único do remetente para bloqueio
-  avatar?: string;
+  senderName: string;
+  sender_id?: string; // Se presente, é um usuário logado
   text: string;
   attachments?: Attachment[];
   timestamp: number;
-}
-
-export interface GeoLocation {
-  lat: number;
-  lng: number;
-}
-
-export interface Comment {
-  id: string;
-  author: string;
-  text: string;
-  timestamp: number;
+  creator_token?: string;
+  reply_to?: ReplyData;
+  mentions?: Mention[];
 }
 
 export interface Event {
   id: string;
-  type: 'event';
   title: string;
   description?: string;
-  image: string;
-  locationName: string;
-  coordinates?: GeoLocation;
-  time: string;
+  image_url: string;
+  location_name: string;
+  latitude: number;
+  longitude: number;
+  start_time: string;
   creatorName: string;
-  creatorId?: string; // ID do criador
-  likes: number;
-  likedByMe?: boolean;
-  comments: Comment[];
+  creator_token?: string;
+  has_tickets: boolean;
+  ticket_price?: number;
   whatsappContact?: string;
+}
+
+export type ProductGroup = 'Comidas' | 'Farmácia' | 'Lojas';
+
+export interface ProductOption {
+  name: string;
+  price: number;
 }
 
 export interface Product {
   id: string;
   name: string;
-  price?: number; // Opcional, mas só exibe se tiver
-  image?: string; // Foto do produto
-}
-
-export interface Establishment {
-  id: string;
-  type: 'establishment';
-  name: string;
   description?: string;
-  image: string;
-  whatsappContact: string;
-  creatorName: string;
-  creatorId?: string; // ID do dono da empresa
-  hasCatalog: boolean; // Se tem produtos ou só foto
-  products: Product[];
-  likes: number;
-  likedByMe?: boolean;
-}
-
-export interface CartItem {
-  productId: string;
-  productName: string;
   price: number;
-  quantity: number;
-  establishmentId: string;
+  image_url: string;
+  category: ProductGroup;
+  has_options: boolean;
+  options: ProductOption[];
+  creator_id?: string;
+  whatsapp_contact: string;
+  created_at?: string;
 }
-
-export type FeedItem = Event | Establishment;
